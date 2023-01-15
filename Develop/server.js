@@ -1,22 +1,31 @@
 const { randomUUID } = require('crypto');
 const express = require('express');
 const path = require('path');
-const noteData = require('./Develop/db/db.json');
+const noteData = require('./db/db.json');
 const fs = require('fs');
-const { readAndAppend, readFromFile } = require('./Develop/helpers/fsUtils');
+const { readAndAppend, readFromFile } = require('./helpers/fsUtils');
+// const api = require('./routes/index.js');
 
-const app = express();
 const PORT = 3001;
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+// app.use('/api', api);
 
 app.use(express.static('public'));
-app.use(express.json());
 
 app.get('/', (req, res) =>
-  res.sendFile(path.join(__dirname, 'develop/public/index.html'))
+  res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
+// Wildcard route to direct users to a 404 page
+// app.get('*', (req, res) =>
+//   res.sendFile(path.join(__dirname, 'public/pages/404.html'))
+// );
+
 app.get('/notes', (req, res) =>
-  res.sendFile(path.join(__dirname, 'develop/public/notes.html'))
+  res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
 
 app.get('/api/notes', (req, res) => res.json(noteData));
@@ -32,7 +41,7 @@ app.post('/api/notes', (req, res) => {
         };
 
 
-        readAndAppend(newNote, './develop/db/db.json');
+        readAndAppend(newNote, './db/db.json');
 
         const response = {
             status: 'success',
