@@ -1,7 +1,6 @@
 const { randomUUID } = require('crypto');
 const express = require('express');
 const path = require('path');
-const noteData = require('./db/db.json');
 const fs = require('fs');
 const { readAndAppend, readFromFile } = require('./helpers/fsUtils');
 const api = require('./routes/index.js');
